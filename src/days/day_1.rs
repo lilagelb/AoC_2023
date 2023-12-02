@@ -21,41 +21,41 @@ impl Day for Day1 {
             while line.is_empty().not() {
                 let first_char: char = line.as_bytes()[0].into();
                 if first_char.is_ascii_digit() {
-                    digits.push(first_char);
-                    digits_part_2.push(first_char);
+                    digits.push(first_char as usize - 48);
+                    digits_part_2.push(first_char as usize - 48);
                     line = &line[1..];
                 } else if line.starts_with("one") {
-                    digits_part_2.push('1');
+                    digits_part_2.push(1);
                     // only advance by 2 as the 'e' could be the start of 'eight'
                     line = &line[2..];
                 } else if line.starts_with("two") {
-                    digits_part_2.push('2');
+                    digits_part_2.push(2);
                     // only advance by 2 as the 'o' could be the start of 'one'
                     line = &line[2..];
                 } else if line.starts_with("three") {
-                    digits_part_2.push('3');
+                    digits_part_2.push(3);
                     // only advance by 4 as the 'e' could be the start of 'eight'
                     line = &line[4..];
                 } else if line.starts_with("four") {
-                    digits_part_2.push('4');
+                    digits_part_2.push(4);
                     line = &line[4..];
                 } else if line.starts_with("five") {
-                    digits_part_2.push('5');
+                    digits_part_2.push(5);
                     // only advance by 3 as the 'e' could be the start of 'eight'
                     line = &line[3..];
                 } else if line.starts_with("six") {
-                    digits_part_2.push('6');
+                    digits_part_2.push(6);
                     line = &line[3..];
                 } else if line.starts_with("seven") {
-                    digits_part_2.push('7');
+                    digits_part_2.push(7);
                     // only advance by 4 as the 'n' could be the start of 'nine'
                     line = &line[4..];
                 } else if line.starts_with("eight") {
-                    digits_part_2.push('8');
+                    digits_part_2.push(8);
                     // only advance by 4 as the 't' could be the start of 'two'
                     line = &line[4..];
                 } else if line.starts_with("nine") {
-                    digits_part_2.push('9');
+                    digits_part_2.push(9);
                     // only advance by 3 as the 'e' could be the start of 'eight'
                     line = &line[3..];
                 } else {
@@ -63,12 +63,8 @@ impl Day for Day1 {
                 }
             }
 
-            part_1 += format!("{}{}", digits.first().unwrap(), digits.last().unwrap())
-                .parse::<usize>()
-                .unwrap();
-            part_2 += format!("{}{}", digits_part_2.first().unwrap(), digits_part_2.last().unwrap())
-                .parse::<usize>()
-                .unwrap();
+            part_1 += 10 * digits[0] + digits.last().unwrap();
+            part_2 += 10 * digits_part_2[0] + digits_part_2.last().unwrap();
         }
 
         Answer { part_1: Some(part_1), part_2: Some(part_2) }

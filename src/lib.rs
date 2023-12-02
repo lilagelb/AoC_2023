@@ -9,11 +9,11 @@ pub trait Day {
 
     fn solve(&mut self, input_file: &str) -> Answer<Self::PartOneType, Self::PartTwoType>;
 
-    fn benchmark(&mut self, input_file: &str) -> BenchmarkedAnswer<Self::PartOneType, Self::PartTwoType> {
+    fn timed(&mut self, input_file: &str) -> TimedAnswer<Self::PartOneType, Self::PartTwoType> {
         let start = Instant::now();
         let answer = self.solve(input_file);
         let time = start.elapsed();
-        BenchmarkedAnswer { answer, time }
+        TimedAnswer { answer, time }
     }
 }
 
@@ -23,19 +23,20 @@ pub struct Answer<T, U> {
 }
 impl<T: Display, U: Display> Display for Answer<T, U> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "    Part 1: {}\n    Part 2: {}",
+        write!(f, "    Part 1: {:>10}\n    Part 2: {:>10}",
                self.part_1.as_ref().map_or_else(|| "uncomputed".to_string(), |value| format!("{}", value)),
                self.part_2.as_ref().map_or_else(|| "uncomputed".to_string(), |value| format!("{}", value)),
         )
     }
 }
 
-pub struct BenchmarkedAnswer<T, U> {
+pub struct TimedAnswer<T, U> {
     answer: Answer<T, U>,
     time: Duration,
 }
-impl<T: Display, U: Display> Display for BenchmarkedAnswer<T, U> {
+impl<T: Display, U: Display> Display for TimedAnswer<T, U> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}\n    Time:   {} ms", self.answer, self.time.as_millis())
+        let millis_more_precise = self.time.as_micros() as f64 / 1000.0;
+        write!(f, "{}\n    Time:   {:>10} ms", self.answer, millis_more_precise)
     }
 }
